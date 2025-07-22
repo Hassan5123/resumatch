@@ -1,7 +1,3 @@
-// Centralized error handling middleware
-// Usage: import { notFound, errorHandler } from './middleware/errorHandler';
-// then after all routes, add: app.use(notFound); app.use(errorHandler);
-
 // 404 handler – catches requests to unknown routes
 const notFound = (req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
@@ -10,7 +6,6 @@ const notFound = (req, res, next) => {
 };
 
 // Generic error handler – formats all errors in a consistent JSON structure
-// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);

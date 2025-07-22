@@ -5,10 +5,9 @@ const userAuth = (req, res, next) => {
 
   // Check if an authorization header exists and starts with 'Bearer'
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    // Try to extract and verify the token
     try {
       token = req.headers.authorization.split(' ')[1]; // Extract the token from the header
-      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded; // Attach user data to the request object
       next(); // Proceed to the next middleware
     } catch (error) {
@@ -17,7 +16,6 @@ const userAuth = (req, res, next) => {
       res.status(401).json({ message: 'Not authorized, token failed' });
     }
   } else {
-    // Handle cases where no token is present
     res.status(401).json({ message: 'No token provided, authorization denied' });
   }
 };
