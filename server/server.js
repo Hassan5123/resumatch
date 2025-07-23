@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const dbConnection = require('./databaseConfig');
+const dbConnection = require('./config/database');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
-
 dotenv.config();
+
+const userRoutes = require('./routes/user');
+
 dbConnection();
 
 const app = express();
@@ -12,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes go here
+app.use('/api/user', userRoutes);
 
 // Error handling middleware after routes
 app.use(notFound);
