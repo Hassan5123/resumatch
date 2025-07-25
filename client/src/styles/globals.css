@@ -1,16 +1,17 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* 
+  Global resets and CSS variables that apply to the
+  entire application. Imported once in _app.js.
+*/
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #f8fbff;
+  --foreground: #080c2a;
 }
 
 html,
+body {
+  background: var(--background);
+}
 body {
   max-width: 100vw;
   overflow-x: hidden;
@@ -33,10 +34,4 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
