@@ -19,7 +19,7 @@ export default function SignUp() {
       // Persist JWT token so the user stays logged in across refreshes
       localStorage.setItem("token", data.token);
       // Navigate to Dashboard after successful sign-up
-      router.push("/dashboard");
+      router.push("/match");
     } catch (err) {
       // Show server validation errors or fallback
       setError(err.response?.data?.message || "Something went wrong");

@@ -18,7 +18,7 @@ export default function Login() {
       const { data } = await api.post("/user/login", form);
       localStorage.setItem("token", data.token);
       // On success, store token then navigate to protected Dashboard
-      router.push("/dashboard");
+      router.push("/match");
     } catch (err) {
       // Show friendly message: either server-provided or fallback
       setError(err.response?.data?.message || "Something went wrong");
