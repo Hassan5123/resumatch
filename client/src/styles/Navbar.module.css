@@ -15,18 +15,18 @@
   display: flex;
   align-items: center;
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: #080c2a;
 }
 
 .logoIcon {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin-right: 0.4rem;
 }
 
 .links {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
@@ -38,7 +38,16 @@
 .signupBtn {
   background: #2563ff;
   color: #fff;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 0.8rem;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.85rem;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
 }

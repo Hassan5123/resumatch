@@ -48,12 +48,35 @@ export default function Match() {
 
     setLoading(true);
     try {
-      await api.post("/resume/upload", formData, {
+      // 1) Upload resume
+      const uploadRes = await api.post("/resume/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
+
+      const resumeId = uploadRes.data?.resume?.id;
+      if (!resumeId) {
+        throw new Error("Failed to get resume ID from server.");
+      }
+
+      // 2) Create match analysis
+      const matchRes = await api.post(
+        "/match/create",
+        {
+          resumeId,
+          jobDescription: jobDesc,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // 3) Persist result and navigate
+      localStorage.setItem("matchResult", JSON.stringify(matchRes.data));
       router.push("/results");
     } catch (err) {
       setError(

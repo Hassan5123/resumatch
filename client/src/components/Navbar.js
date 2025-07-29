@@ -36,7 +36,11 @@ export default function Navbar() {
       </div>
       <div className={styles.links} suppressHydrationWarning>
         {loggedIn ? (
-          <Logout />
+          <>
+            <Link href="/match" className={styles.signupBtn}>Analyze Now</Link>
+            <Link href="/history" className={styles.signupBtn}>Match History</Link>
+            <Logout />
+          </>
         ) : (
           <>
             <Link href="/login" className={styles.link}>Login</Link>
