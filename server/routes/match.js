@@ -10,4 +10,10 @@ router.use(userAuth);
 // Create New Resume Match
 router.post('/create', matchController.createMatch);
 
+// Get all user matches
+router.get('/', matchController.getMatches);
+
+// Get specific match details
+router.get('/:id', matchController.getMatchById);
+
 module.exports = router;

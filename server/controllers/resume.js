@@ -218,6 +218,38 @@ const resumeController = {
     } catch (error) {
       next(error);
     }
+  },
+
+  // Download resume as text file (since original files aren't stored)
+  downloadResume: async (req, res, next) => {
+    try {
+      const { userId } = req.user;
+      const { id } = req.params;
+
+      const resume = await Resume.findOne({ 
+        _id: id, 
+        userId, 
+        isActive: true 
+      }).select('originalName extractedText createdAt');
+
+      if (!resume) {
+        return res.status(404).json({ message: 'Resume not found' });
+      }
+
+      // Create filename without extension, add .txt
+      const baseFilename = resume.originalName.replace(/\.[^/.]+$/, "");
+      const filename = `${baseFilename}_extracted.txt`;
+
+      // Set headers for file download
+      res.setHeader('Content-Type', 'text/plain');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      
+      // Send the extracted text as downloadable file
+      res.send(resume.extractedText);
+
+    } catch (error) {
+      next(error);
+    }
   }
 };
 
