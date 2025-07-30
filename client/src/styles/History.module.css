@@ -11,6 +11,13 @@
   gap: 2rem;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .title {
   text-align: center;
   font-size: 1.85rem;
@@ -70,11 +77,17 @@
   color: #111827;
 }
 
+.average {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2563ff;
+}
+
 .preview {
   font-size: 0.875rem;
   color: #374151;
   line-height: 1.4;
-  max-height: 4.2em; /* 3 lines approx */
+  max-height: 4.2em;
   overflow: hidden;
   text-overflow: ellipsis;
 }

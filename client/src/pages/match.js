@@ -1,4 +1,3 @@
-// Protected Match page – upload resume and job description for analysis
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";

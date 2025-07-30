@@ -74,7 +74,9 @@ const resumeController = {
         originalName: file.originalname,
         fileSize: file.size,
         extractedText,
-        analysisMetadata: {
+        mimeType: file.mimetype,
+storedPath: file.path,
+analysisMetadata: {
           processingTime,
           fileType: file.mimetype,
           pageCount
@@ -84,9 +86,7 @@ const resumeController = {
       const newResume = new Resume(resumeData);
       await newResume.save();
 
-      // Clean up uploaded file from disk (I've stored the data in DB)
-      await fs.unlink(file.path).catch(console.error);
-
+      
       res.status(201).json({
         message: 'Resume uploaded and processed successfully',
         resume: {
@@ -166,61 +166,7 @@ const resumeController = {
     }
   },
 
-  // Soft delete resume
-  deleteResume: async (req, res, next) => {
-    try {
-      const { userId } = req.user;
-      const { id } = req.params;
-
-      const resume = await Resume.findOne({ 
-        _id: id, 
-        userId, 
-        isActive: true 
-      });
-
-      if (!resume) {
-        return res.status(404).json({ message: 'Resume not found' });
-      }
-
-      // Soft delete
-      resume.isActive = false;
-      await resume.save();
-
-      res.json({ message: 'Resume deleted successfully' });
-
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  // Get resume text for matching (internal use)
-  getResumeText: async (req, res, next) => {
-    try {
-      const { userId } = req.user;
-      const { id } = req.params;
-
-      const resume = await Resume.findOne({ 
-        _id: id, 
-        userId, 
-        isActive: true 
-      }).select('extractedText originalName');
-
-      if (!resume) {
-        return res.status(404).json({ message: 'Resume not found' });
-      }
-
-      res.json({
-        id: resume._id,
-        originalName: resume.originalName,
-        extractedText: resume.extractedText
-      });
-
-    } catch (error) {
-      next(error);
-    }
-  },
-
-  // Download resume as text file (since original files aren't stored)
+  // Download original resume file (PDF, DOCX, etc.)
   downloadResume: async (req, res, next) => {
     try {
       const { userId } = req.user;
@@ -230,22 +176,19 @@ const resumeController = {
         _id: id, 
         userId, 
         isActive: true 
-      }).select('originalName extractedText createdAt');
+      }).select('originalName storedPath mimeType');
 
       if (!resume) {
         return res.status(404).json({ message: 'Resume not found' });
       }
 
-      // Create filename without extension, add .txt
-      const baseFilename = resume.originalName.replace(/\.[^/.]+$/, "");
-      const filename = `${baseFilename}_extracted.txt`;
-
-      // Set headers for file download
-      res.setHeader('Content-Type', 'text/plain');
-      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
-      // Send the extracted text as downloadable file
-      res.send(resume.extractedText);
+      // Stream the original file back to the client
+      res.download(resume.storedPath, resume.originalName, (err) => {
+        if (err) {
+          console.error('File download error:', err);
+          return next(err);
+        }
+      });
 
     } catch (error) {
       next(error);

@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     aiProvider: {
       type: String,
       enum: ['openai', 'anthropic', 'google'],
-      default: 'openai'
+      default: 'anthropic'
     },
     notifications: {
       type: Boolean,

@@ -43,7 +43,7 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <Link href="/login" className={styles.link}>Login</Link>
+            <Link href="/login" className={styles.signupBtn}>Login</Link>
             <Link href="/signup" className={styles.signupBtn}>Sign Up</Link>
           </>
         )}

@@ -1,8 +1,3 @@
-/* 
-  Global resets and CSS variables that apply to the
-  entire application. Imported once in _app.js.
-*/
-
 :root {
   --background: #f8fbff;
   --foreground: #080c2a;

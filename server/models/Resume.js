@@ -47,6 +47,14 @@ const resumeSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  mimeType: {
+    type: String,
+    required: true
+  },
+  storedPath: {
+    type: String,
+    required: true
+  },
   analysisMetadata: {
     processingTime: Number,
     fileType: String,

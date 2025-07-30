@@ -8,12 +8,9 @@ export default function History() {
   const router = useRouter();
   const { id } = router.query;
 
-  // List state
   const [matches, setMatches] = useState([]);
-  // Detail state
+  const averageScore = matches.length ? (matches.reduce((sum, m) => sum + m.matchScore, 0) / matches.length).toFixed(1) : null;
   const [matchDetail, setMatchDetail] = useState(null);
-  const [resumeText, setResumeText] = useState("");
-  const [showResume, setShowResume] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -54,7 +51,8 @@ export default function History() {
     fetchData();
   }, [id, router]);
 
-  // Handle download resume as text file
+
+  // Handle download resume
   const handleDownloadResume = async () => {
     if (!matchDetail) return;
     try {
@@ -63,11 +61,11 @@ export default function History() {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob",
       });
-      const blob = new Blob([res.data], { type: "text/plain" });
+      const blob = new Blob([res.data], { type: res.headers["content-type"] || "application/octet-stream" });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${matchDetail.resume.originalName.replace(/\.[^/.]+$/, "")}_extracted.txt`;
+      link.download = matchDetail.resume.originalName;
       link.click();
       window.URL.revokeObjectURL(url);
     } catch (err) {
@@ -75,32 +73,15 @@ export default function History() {
     }
   };
 
-  const toggleViewResume = async () => {
-    if (showResume) {
-      setShowResume(false);
-      return;
-    }
-    // If not loaded yet, fetch resume text first
-    if (!resumeText) {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await api.get(`/resume/${matchDetail.resume.id}/text`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setResumeText(res.data.extractedText);
-      } catch (err) {
-        alert("Failed to fetch resume text.");
-        return;
-      }
-    }
-    setShowResume(true);
-  };
-
-  // ------ RENDER LIST ---------
   if (!id) {
     return (
       <main className={listStyles.container}>
-        <h1 className={listStyles.title}>Your Match History</h1>
+        <div className={listStyles.header}>
+          <h1 className={listStyles.title}>Your Match History</h1>
+          {averageScore !== null && (
+            <div className={listStyles.average}>Avg Score: {averageScore}%</div>
+          )}
+        </div>
         {loading && <p>Loading matches…</p>}
         {error && <p className={listStyles.error}>{error}</p>}
         {!loading && matches.length === 0 && <p>No matches found.</p>}
@@ -125,7 +106,6 @@ export default function History() {
     );
   }
 
-  // ------ RENDER DETAIL ----------
   return (
     <main className={detailStyles.container}>
       <button className={detailStyles.backBtn} onClick={() => router.push("/history")}>← Back to History</button>
@@ -191,20 +171,10 @@ export default function History() {
             <section className={detailStyles.section}>
               <h3 className={detailStyles.heading}>Resume</h3>
               <div className={detailStyles.resumeControls}>
-                <button className={detailStyles.button} onClick={toggleViewResume}>
-                  {showResume ? "Hide Resume" : "View Resume"}
-                </button>
                 <button className={detailStyles.buttonSecondary} onClick={handleDownloadResume}>
                   Download Resume
                 </button>
               </div>
-              {showResume && (
-                <textarea
-                  className={detailStyles.resumeText}
-                  readOnly
-                  value={resumeText}
-                />
-              )}
             </section>
           </>
         )

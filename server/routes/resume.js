@@ -21,11 +21,6 @@ router.get('/', resumeController.getResumes);
 
 router.get('/:id', resumeController.getResumeById);
 
-// Get resume text content (for matching)
-router.get('/:id/text', resumeController.getResumeText);
-
-router.delete('/:id', resumeController.deleteResume);
-
 router.get('/:id/download', resumeController.downloadResume);
 
 module.exports = router;
