@@ -1,6 +1,5 @@
 # ResuMatch: AI-Powered Resume Matching
 
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
@@ -14,7 +13,7 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
 - **AI-Powered Analysis**: Utilizes advanced NLP to compare resumes against job descriptions
 - **Detailed Matching Report**: Get a comprehensive breakdown of how well your resume matches a job posting
 - **User Authentication**: Secure signup and login functionality to save your matching history
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
+- **Responsive Design**: Works quickly and seamlessly
 - **History Tracking**: View and compare your previous resume matches, and view your average match score
 
 ## 🛠 Tech Stack
@@ -22,7 +21,6 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
 ### Frontend
 - **Framework**: Next.js 15 with React 19
 - **Styling**: CSS Modules
-- **State Management**: React Context API
 - **HTTP Client**: Axios
 
 ### Backend
@@ -35,8 +33,6 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
 ### Development Tools
 - **Package Manager**: npm
 - **Version Control**: Git
-- **Linting**: ESLint
-- **Code Formatting**: Prettier
 
 ## 🚀 Getting Started
 
@@ -112,13 +108,10 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
 ### 2. Matching Algorithm
 - Skills assessment
 - Experience alignment
-- Education requirements
 
 ### 3. User Dashboard
 - View matching history
 - Track improvements over time
-- Save favorite job descriptions
-- Download analysis reports
 
 ### 4. Security
 - Secure authentication with JWT
@@ -153,10 +146,6 @@ resumatch/
 ## 🤝 Contributing
 
 As this is a personal portfolio project, contributions are not being accepted at this time. However, feel free to fork the repository and adapt it for your own use.
-
-## 📄 License
-
-This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
