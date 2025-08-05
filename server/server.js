@@ -8,8 +8,6 @@ dotenv.config();
 const userRoutes = require('./routes/user');
 const resumeRoutes = require('./routes/resume');
 const matchRoutes = require('./routes/match');
-const testRoutes = require('./routes/test');
-
 
 dbConnection();
 
@@ -23,7 +21,6 @@ app.use(express.json());
 app.use('/api/user', userRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/match', matchRoutes);
-app.use('/api/test', testRoutes);
 
 // Error handling middleware - MUST come after all routes
 app.use(notFound);
