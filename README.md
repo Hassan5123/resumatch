@@ -72,7 +72,7 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
    **Backend (server/.env)**
    ```
    PORT=5001
-   MONGODB_URI=your_mongodb_connection_string
+   MONGODB_URL=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    ANTHROPIC_API_KEY=your_anthropic_api_key
    ```
