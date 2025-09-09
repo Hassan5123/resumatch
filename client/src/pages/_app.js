@@ -1,6 +1,5 @@
-// Import global CSS once so it affects all pages.
 import "@/styles/globals.css";
-// Inject shared layout (Navbar).
+import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "@/components/Navbar";
 
 export default function App({ Component, pageProps }) {

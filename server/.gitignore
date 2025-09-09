@@ -17,3 +17,5 @@ pnpm-debug.log*
 
 # OS cruft
 .DS_Store
+
+/uploads

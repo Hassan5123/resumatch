@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
-import listStyles from "@/styles/History.module.css";
-import detailStyles from "@/styles/HistoryDetail.module.css";
 
 export default function History() {
   const router = useRouter();
@@ -51,7 +49,6 @@ export default function History() {
     fetchData();
   }, [id, router]);
 
-
   // Handle download resume
   const handleDownloadResume = async () => {
     if (!matchDetail) return;
@@ -75,110 +72,169 @@ export default function History() {
 
   if (!id) {
     return (
-      <main className={listStyles.container}>
-        <div className={listStyles.header}>
-          <h1 className={listStyles.title}>Your Match History</h1>
-          {averageScore !== null && (
-            <div className={listStyles.average}>Avg Score: {averageScore}%</div>
-          )}
-        </div>
-        {loading && <p>Loading matches…</p>}
-        {error && <p className={listStyles.error}>{error}</p>}
-        {!loading && matches.length === 0 && <p>No matches found.</p>}
-
-        <ul className={listStyles.matchList}>
-          {matches.map((m) => (
-            <li
-              key={m.id}
-              className={listStyles.card}
-              onClick={() => router.push({ pathname: "/history", query: { id: m.id } })}
-            >
-              <div className={listStyles.cardHeader}>
-                <span className={listStyles.score}>{m.matchScore}%</span>
-                <span className={listStyles.date}>{new Date(m.createdAt).toLocaleDateString()}</span>
+      <div className="container mt-5">
+        <div className="card shadow-sm border">
+          <div className="card-body p-4">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h1 className="h4 fw-semibold mb-0">Your Match History</h1>
+              {averageScore !== null && (
+                <div className="badge bg-primary fs-6">Avg Score: {averageScore}%</div>
+              )}
+            </div>
+            
+            {loading && (
+              <div className="text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-3 text-secondary">Loading matches...</p>
               </div>
-              <p className={listStyles.resumeName}>{m.resume.originalName}</p>
-              <p className={listStyles.preview}>{m.jobDescription}</p>
-            </li>
-          ))}
-        </ul>
-      </main>
+            )}
+            
+            {error && (
+              <div className="alert alert-danger" role="alert">{error}</div>
+            )}
+            
+            {!loading && matches.length === 0 && (
+              <div className="alert alert-info" role="alert">No matches found.</div>
+            )}
+
+            <div className="row g-3">
+              {matches.map((m) => (
+                <div className="col-md-6" key={m.id}>
+                  <div 
+                    className="card h-100 shadow-sm hover-card" 
+                    onClick={() => router.push({ pathname: "/history", query: { id: m.id } })}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="card-body">
+                      <div className="d-flex justify-content-between align-items-center mb-2">
+                        <h5 className="card-title text-primary fw-bold mb-0">{m.matchScore}%</h5>
+                        <small className="text-muted">{new Date(m.createdAt).toLocaleDateString()}</small>
+                      </div>
+                      <h6 className="card-subtitle mb-2 fw-semibold">{m.resume.originalName}</h6>
+                      <p className="card-text text-secondary small text-truncate">{m.jobDescription}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <main className={detailStyles.container}>
-      <button className={detailStyles.backBtn} onClick={() => router.push("/history")}>← Back to History</button>
+    <div className="container mt-5">
+      <div className="card shadow-sm border">
+        <div className="card-body p-4">
+          <button 
+            onClick={() => router.push("/history")} 
+            className="btn btn-light btn-sm mb-4"
+          >
+            ← Back to History
+          </button>
 
-      {loading ? (
-        <p>Loading match details…</p>
-      ) : error ? (
-        <p className={detailStyles.error}>{error}</p>
-      ) : (
-        matchDetail && (
-          <>
-            <h1 className={detailStyles.title}>Match Details</h1>
-
-            <section className={detailStyles.section}>
-              <h2 className={detailStyles.heading}>Overall Match Score</h2>
-              <div className={detailStyles.scoreWrapper}>
-                <span className={detailStyles.score}>{matchDetail.matchScore}%</span>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-            </section>
+              <p className="mt-3 text-secondary">Loading match details...</p>
+            </div>
+          ) : error ? (
+            <div className="alert alert-danger" role="alert">{error}</div>
+          ) : (
+            matchDetail && (
+              <>
+                <h1 className="text-center mb-4 h4 fw-semibold">Match Details</h1>
 
-            {matchDetail.summary && (
-              <section className={detailStyles.section}>
-                <h3 className={detailStyles.subHeading}>Summary</h3>
-                <p className={detailStyles.paragraph}>{matchDetail.summary}</p>
-              </section>
-            )}
+                {/* Score Section */}
+                <div className="text-center mb-4">
+                  <h5 className="text-secondary mb-3">Overall Match Score</h5>
+                  <div className="display-4 fw-bold text-primary">{matchDetail.matchScore}%</div>
+                </div>
 
-            <section className={detailStyles.sectionTwoCol}>
-              <div>
-                <h3 className={detailStyles.subHeading}>Strengths</h3>
-                <ul className={detailStyles.list}>
-                  {matchDetail.strengths?.map((s, i) => (
-                    <li key={i}>✅ {s}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className={detailStyles.subHeading}>Areas to Improve</h3>
-                <ul className={detailStyles.list}>
-                  {matchDetail.improvements?.map((imp, i) => (
-                    <li key={i}>➡️ {imp}</li>
-                  ))}
-                </ul>
-              </div>
-            </section>
+                {/* Summary Section */}
+                {matchDetail.summary && (
+                  <div className="mb-4">
+                    <h5 className="fw-semibold mb-2">Summary</h5>
+                    <p className="text-secondary">{matchDetail.summary}</p>
+                  </div>
+                )}
 
-            {matchDetail.missingSkills?.length > 0 && (
-              <section className={detailStyles.section}>
-                <h3 className={detailStyles.subHeading}>Missing Skills</h3>
-                <ul className={detailStyles.list}>
-                  {matchDetail.missingSkills.map((skill, i) => (
-                    <li key={i}>❌ {skill}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
+                {/* Strengths and Improvements */}
+                <div className="row g-4 mb-4">
+                  <div className="col-md-6">
+                    <div className="card h-100 border-0 bg-light">
+                      <div className="card-body">
+                        <h5 className="card-title fw-semibold mb-3">Strengths</h5>
+                        <ul className="list-unstyled">
+                          {matchDetail.strengths?.map((s, i) => (
+                            <li key={i} className="mb-2">✅ {s}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="card h-100 border-0 bg-light">
+                      <div className="card-body">
+                        <h5 className="card-title fw-semibold mb-3">Areas to Improve</h5>
+                        <ul className="list-unstyled">
+                          {matchDetail.improvements?.map((imp, i) => (
+                            <li key={i} className="mb-2">➡️ {imp}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <section className={detailStyles.section}>
-              <h3 className={detailStyles.heading}>Job Description</h3>
-              <pre className={detailStyles.jobDesc}>{matchDetail.jobDescription}</pre>
-            </section>
+                {/* Missing Skills */}
+                {matchDetail.missingSkills?.length > 0 && (
+                  <div className="mb-4">
+                    <div className="card border-0 bg-light">
+                      <div className="card-body">
+                        <h5 className="card-title fw-semibold mb-3">Missing Skills</h5>
+                        <ul className="list-unstyled">
+                          {matchDetail.missingSkills.map((skill, i) => (
+                            <li key={i} className="mb-2">❌ {skill}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-            <section className={detailStyles.section}>
-              <h3 className={detailStyles.heading}>Resume</h3>
-              <div className={detailStyles.resumeControls}>
-                <button className={detailStyles.buttonSecondary} onClick={handleDownloadResume}>
-                  Download Resume
-                </button>
-              </div>
-            </section>
-          </>
-        )
-      )}
-    </main>
+                {/* Job Description */}
+                <div className="mb-4">
+                  <h5 className="fw-semibold mb-2">Job Description</h5>
+                  <div className="bg-light p-3 rounded">
+                    <pre className="mb-0" style={{ whiteSpace: 'pre-wrap', fontSize: '0.85rem' }}>
+                      {matchDetail.jobDescription}
+                    </pre>
+                  </div>
+                </div>
+
+                {/* Resume */}
+                <div className="mb-4">
+                  <h5 className="fw-semibold mb-2">Resume</h5>
+                  <div className="text-center mt-3">
+                    <button 
+                      onClick={handleDownloadResume}
+                      className="btn btn-outline-primary"
+                    >
+                      Download Resume
+                    </button>
+                  </div>
+                </div>
+              </>
+            )
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

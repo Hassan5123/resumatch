@@ -1,7 +1,6 @@
 // (Landing Page) This file maps to the URL '/'
 import Head from "next/head";
 import Link from "next/link";
-import styles from "@/styles/Landing.module.css";
 
 export default function Landing() {
   return (
@@ -12,38 +11,56 @@ export default function Landing() {
       </Head>
 
       {/* ----- Hero Section ----- */}
-      <section className={styles.hero}>
-        <h1>
-          Get Your Dream Job with <span>AI</span>
-        </h1>
-        <p>Upload resume, paste job description, get instant matching insights</p>
-        <Link href="/signup" className={styles.ctaBtn}>
-          Get Started&nbsp;-&nbsp;Free →
-        </Link>
+      <section className="text-center py-5 px-4" style={{ background: '#f8fbff' }}>
+        <div className="container">
+          <h1 className="display-5 fw-bold mb-3 text-dark">
+            Get Your Dream Job with <span className="text-primary">AI</span>
+          </h1>
+          <p className="fs-5 text-secondary mb-4">
+            Upload resume, paste job description, get instant matching insights
+          </p>
+          <Link href="/signup" className="btn btn-primary px-4 py-2">
+            Get Started - Free →
+          </Link>
+        </div>
       </section>
 
       {/* ----- Feature cards ----- */}
-      <section className={styles.features}>
-        <div className={styles.card}>
-          <div className={styles.cardIcon}>⬆️</div>
-          <h3 className={styles.cardTitle}>Upload Resume</h3>
-          <p className={styles.cardDesc}>
-            Securely upload your resume in PDF or DOCX for instant analysis
-          </p>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.cardIcon}>🤖</div>
-          <h3 className={styles.cardTitle}>AI Match Analysis</h3>
-          <p className={styles.cardDesc}>
-            Our advanced AI analyzes job requirements and matches them with your skills
-          </p>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.cardIcon}>📊</div>
-          <h3 className={styles.cardTitle}>Get Insights</h3>
-          <p className={styles.cardDesc}>
-            Receive detailed insights and recommendations to improve your application
-          </p>
+      <section className="container py-5">
+        <div className="row justify-content-center g-4">
+          <div className="col-md-4">
+            <div className="card h-100 text-center shadow-sm border">
+              <div className="card-body p-4">
+                <div className="fs-1 mb-3">⬆️</div>
+                <h3 className="card-title h5 fw-semibold">Upload Resume</h3>
+                <p className="card-text text-secondary">
+                  Securely upload your resume in PDF or DOCX for instant analysis
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card h-100 text-center shadow-sm border">
+              <div className="card-body p-4">
+                <div className="fs-1 mb-3">🤖</div>
+                <h3 className="card-title h5 fw-semibold">AI Match Analysis</h3>
+                <p className="card-text text-secondary">
+                  Our advanced AI analyzes job requirements and matches them with your skills
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card h-100 text-center shadow-sm border">
+              <div className="card-body p-4">
+                <div className="fs-1 mb-3">📊</div>
+                <h3 className="card-title h5 fw-semibold">Get Insights</h3>
+                <p className="card-text text-secondary">
+                  Receive detailed insights and recommendations to improve your application
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

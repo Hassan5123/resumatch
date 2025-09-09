@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
-import styles from "@/styles/Match.module.css";
 
 export default function Match() {
   const router = useRouter();
@@ -88,44 +87,72 @@ export default function Match() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Upload Resume</h1>
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-8 col-lg-6">
+          <div className="card shadow-sm border">
+            <div className="card-body p-4">
+              <h1 className="text-center mb-4 h4 fw-semibold">Upload Resume</h1>
 
-      <label className={styles.uploadZone}>
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={handleFileChange}
-          hidden
-        />
-        <span>
-          📄 Attach your Resume
-          <br />Supports: PDF, DOCX, DOC
-          <br />Max size: 10MB
-        </span>
-      </label>
+              <label className="border border-2 border-dashed rounded p-5 text-center d-block mb-3 text-secondary" 
+                style={{cursor: 'pointer'}}
+                onMouseOver={(e) => e.currentTarget.classList.add('bg-light')}
+                onMouseOut={(e) => e.currentTarget.classList.remove('bg-light')}>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleFileChange}
+                  className="d-none"
+                />
+                <div>
+                  <div>📄 Attach your Resume</div>
+                  <small>Supports: PDF, DOCX, DOC</small>
+                  <br />
+                  <small>Max size: 10MB</small>
+                </div>
+              </label>
 
-      {resumeFile && (
-        <p className={styles.currentFile}>Current: {resumeFile.name} ✔</p>
-      )}
+              {resumeFile && (
+                <div className="alert alert-success py-2">
+                  <small>Current: {resumeFile.name} ✔</small>
+                </div>
+              )}
 
-      <h2>Job Description</h2>
-      <textarea
-        className={styles.textarea}
-        placeholder="Paste the job description here..."
-        value={jobDesc}
-        onChange={(e) => setJobDesc(e.target.value)}
-      />
+              <h5 className="mt-3 mb-2">Job Description</h5>
+              <textarea
+                className="form-control mb-3"
+                placeholder="Paste the job description here..."
+                value={jobDesc}
+                onChange={(e) => setJobDesc(e.target.value)}
+                rows="6"
+              />
 
-      {error && <div className={styles.error}>{error}</div>}
+              {error && (
+                <div className="alert alert-danger py-2 text-center" role="alert">
+                  {error}
+                </div>
+              )}
 
-      <button
-        className={styles.button}
-        onClick={handleAnalyze}
-        disabled={loading}
-      >
-        {loading ? "Uploading..." : "Analyze Match"}
-      </button>
+              <div className="d-grid gap-2 mt-4">
+                <button
+                  onClick={handleAnalyze}
+                  disabled={loading}
+                  className="btn btn-primary"
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Uploading...
+                    </>
+                  ) : (
+                    "Analyze Match"
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

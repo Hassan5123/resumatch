@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import api from "@/utils/api";
-import styles from "@/styles/Auth.module.css";
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,28 +24,64 @@ export default function SignUp() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1>Create an Account</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="firstName">First Name</label>
-          <input id="firstName" name="firstName" value={form.firstName} onChange={handleChange} />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-5 col-lg-4">
+          <div className="card shadow-sm border">
+            <div className="card-body p-4">
+              <h1 className="text-center mb-4 h4 fw-semibold">Create an Account</h1>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="firstName" className="form-label">First Name</label>
+                  <input 
+                    className="form-control" 
+                    id="firstName" 
+                    name="firstName" 
+                    value={form.firstName} 
+                    onChange={handleChange} 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="lastName" className="form-label">Last Name</label>
+                  <input 
+                    className="form-control" 
+                    id="lastName" 
+                    name="lastName" 
+                    value={form.lastName} 
+                    onChange={handleChange} 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input 
+                    type="email" 
+                    className="form-control" 
+                    id="email" 
+                    name="email" 
+                    value={form.email} 
+                    onChange={handleChange} 
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <input 
+                    type="password" 
+                    className="form-control" 
+                    id="password" 
+                    name="password" 
+                    value={form.password} 
+                    onChange={handleChange} 
+                  />
+                </div>
+                {error && <div className="alert alert-danger py-2 text-center" role="alert">{error}</div>}
+                <div className="d-grid gap-2 mt-4">
+                  <button type="submit" className="btn btn-primary">Sign Up Now</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="lastName">Last Name</label>
-          <input id="lastName" name="lastName" value={form.lastName} onChange={handleChange} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" value={form.email} onChange={handleChange} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" value={form.password} onChange={handleChange} />
-        </div>
-        {error && <div className={styles.error}>{error}</div>}
-        <button type="submit">Sign Up Now</button>
-      </form>
+      </div>
     </div>
   );
 }

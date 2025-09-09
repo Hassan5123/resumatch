@@ -20,7 +20,7 @@ ResuMatch is a modern web application that leverages AI to help job seekers opti
 
 ### Frontend
 - **Framework**: Next.js 15 with React 19
-- **Styling**: CSS Modules
+- **Styling**: Bootstrap CSS
 - **HTTP Client**: Axios
 
 ### Backend
