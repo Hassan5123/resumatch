@@ -72,9 +72,9 @@ export default function History() {
 
   if (!id) {
     return (
-      <div className="container mt-5">
+      <div className="container-fluid mt-5" style={{ maxWidth: "900px" }}>
         <div className="card shadow-sm border">
-          <div className="card-body p-4">
+          <div className="card-body p-3">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h1 className="h4 fw-semibold mb-0">Your Match History</h1>
               {averageScore !== null && (
@@ -126,9 +126,9 @@ export default function History() {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container-fluid mt-4" style={{ maxWidth: "950px" }}>
       <div className="card shadow-sm border">
-        <div className="card-body p-4">
+        <div className="card-body p-2">
           <button 
             onClick={() => router.push("/history")} 
             className="btn btn-light btn-sm mb-4"
@@ -148,31 +148,31 @@ export default function History() {
           ) : (
             matchDetail && (
               <>
-                <h1 className="text-center mb-4 h4 fw-semibold">Match Details</h1>
+                <h1 className="text-center mb-2 h5 fw-semibold">Match Details</h1>
 
                 {/* Score Section */}
-                <div className="text-center mb-4">
+                <div className="text-center mb-3">
                   <h5 className="text-secondary mb-3">Overall Match Score</h5>
                   <div className="display-4 fw-bold text-primary">{matchDetail.matchScore}%</div>
                 </div>
 
                 {/* Summary Section */}
                 {matchDetail.summary && (
-                  <div className="mb-4">
-                    <h5 className="fw-semibold mb-2">Summary</h5>
-                    <p className="text-secondary">{matchDetail.summary}</p>
+                  <div className="mb-3">
+                    <h5 className="fw-semibold mb-1 fs-6">Summary</h5>
+                    <p className="text-secondary small mb-2">{matchDetail.summary}</p>
                   </div>
                 )}
 
                 {/* Strengths and Improvements */}
-                <div className="row g-4 mb-4">
+                <div className="row g-3 mb-3">
                   <div className="col-md-6">
                     <div className="card h-100 border-0 bg-light">
-                      <div className="card-body">
-                        <h5 className="card-title fw-semibold mb-3">Strengths</h5>
+                      <div className="card-body py-2 px-3">
+                        <h5 className="card-title fw-semibold mb-2 fs-6">Strengths</h5>
                         <ul className="list-unstyled">
                           {matchDetail.strengths?.map((s, i) => (
-                            <li key={i} className="mb-2">✅ {s}</li>
+                            <li key={i} className="mb-1 small">✅ {s}</li>
                           ))}
                         </ul>
                       </div>
@@ -180,11 +180,11 @@ export default function History() {
                   </div>
                   <div className="col-md-6">
                     <div className="card h-100 border-0 bg-light">
-                      <div className="card-body">
-                        <h5 className="card-title fw-semibold mb-3">Areas to Improve</h5>
+                      <div className="card-body py-2 px-3">
+                        <h5 className="card-title fw-semibold mb-2 fs-6">Areas to Improve</h5>
                         <ul className="list-unstyled">
                           {matchDetail.improvements?.map((imp, i) => (
-                            <li key={i} className="mb-2">➡️ {imp}</li>
+                            <li key={i} className="mb-1 small">➡️ {imp}</li>
                           ))}
                         </ul>
                       </div>
@@ -194,13 +194,13 @@ export default function History() {
 
                 {/* Missing Skills */}
                 {matchDetail.missingSkills?.length > 0 && (
-                  <div className="mb-4">
+                  <div className="mb-3">
                     <div className="card border-0 bg-light">
-                      <div className="card-body">
-                        <h5 className="card-title fw-semibold mb-3">Missing Skills</h5>
+                      <div className="card-body py-2 px-3">
+                        <h5 className="card-title fw-semibold mb-2 fs-6">Missing Skills</h5>
                         <ul className="list-unstyled">
                           {matchDetail.missingSkills.map((skill, i) => (
-                            <li key={i} className="mb-2">❌ {skill}</li>
+                            <li key={i} className="mb-1 small">❌ {skill}</li>
                           ))}
                         </ul>
                       </div>
@@ -209,19 +209,19 @@ export default function History() {
                 )}
 
                 {/* Job Description */}
-                <div className="mb-4">
-                  <h5 className="fw-semibold mb-2">Job Description</h5>
-                  <div className="bg-light p-3 rounded">
-                    <pre className="mb-0" style={{ whiteSpace: 'pre-wrap', fontSize: '0.85rem' }}>
+                <div className="mb-3">
+                  <h5 className="fw-semibold mb-1 fs-6">Job Description</h5>
+                  <div className="bg-light p-2 rounded">
+                    <pre className="mb-0" style={{ whiteSpace: 'pre-wrap', fontSize: '0.75rem', lineHeight: '1.35' }}>
                       {matchDetail.jobDescription}
                     </pre>
                   </div>
                 </div>
 
                 {/* Resume */}
-                <div className="mb-4">
-                  <h5 className="fw-semibold mb-2">Resume</h5>
-                  <div className="text-center mt-3">
+                <div className="mb-2">
+                  <h5 className="fw-semibold mb-1 fs-6">Resume</h5>
+                  <div className="text-center mt-1">
                     <button 
                       onClick={handleDownloadResume}
                       className="btn btn-outline-primary"

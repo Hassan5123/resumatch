@@ -42,36 +42,36 @@ export default function Results() {
 
   const { match, metadata } = data;
   return (
-    <div className="container my-5">
+    <div className="container-fluid my-4" style={{ maxWidth: "950px" }}>
       <div className="row justify-content-center">
-        <div className="col-md-10 col-lg-8">
+        <div className="col-12">
           <div className="card shadow-sm border">
-            <div className="card-body p-4">
-              <h1 className="text-center mb-4 h4 fw-semibold">Match Analysis Results</h1>
+            <div className="card-body p-2">
+              <h1 className="text-center mb-2 h5 fw-semibold">Match Analysis Results</h1>
               
               {/* Score Section */}
-              <div className="text-center mb-4">
+              <div className="text-center mb-3">
                 <h5 className="text-secondary mb-3">Overall Match Score</h5>
                 <div className="display-4 fw-bold text-primary">{match.matchScore}%</div>
               </div>
 
               {/* Summary Section */}
               {match.summary && (
-                <div className="mb-4">
-                  <h5 className="fw-semibold mb-2">Summary</h5>
-                  <p className="text-secondary">{match.summary}</p>
+                <div className="mb-3">
+                  <h5 className="fw-semibold mb-2 fs-6">Summary</h5>
+                  <p className="text-secondary small">{match.summary}</p>
                 </div>
               )}
 
               {/* Strengths and Improvements */}
-              <div className="row g-4 mb-4">
+              <div className="row g-3 mb-3">
                 <div className="col-md-6">
                   <div className="card h-100 border-0 bg-light">
-                    <div className="card-body">
-                      <h5 className="card-title fw-semibold mb-3">Strengths</h5>
+                    <div className="card-body py-2 px-3">
+                      <h5 className="card-title fw-semibold mb-2 fs-6">Strengths</h5>
                       <ul className="list-unstyled">
                         {match.strengths?.map((s, i) => (
-                          <li key={i} className="mb-2">✅ {s}</li>
+                          <li key={i} className="mb-1 small">✅ {s}</li>
                         ))}
                       </ul>
                     </div>
@@ -79,11 +79,11 @@ export default function Results() {
                 </div>
                 <div className="col-md-6">
                   <div className="card h-100 border-0 bg-light">
-                    <div className="card-body">
-                      <h5 className="card-title fw-semibold mb-3">Areas to Improve</h5>
+                    <div className="card-body py-2 px-3">
+                      <h5 className="card-title fw-semibold mb-2 fs-6">Areas to Improve</h5>
                       <ul className="list-unstyled">
                         {match.improvements?.map((imp, i) => (
-                          <li key={i} className="mb-2">➡️ {imp}</li>
+                          <li key={i} className="mb-1 small">➡️ {imp}</li>
                         ))}
                       </ul>
                     </div>
@@ -93,13 +93,13 @@ export default function Results() {
 
               {/* Missing Skills */}
               {match.missingSkills?.length > 0 && (
-                <div className="mb-4">
+                <div className="mb-3">
                   <div className="card border-0 bg-light">
-                    <div className="card-body">
-                      <h5 className="card-title fw-semibold mb-3">Missing Skills</h5>
+                    <div className="card-body py-2 px-3">
+                      <h5 className="card-title fw-semibold mb-2 fs-6">Missing Skills</h5>
                       <ul className="list-unstyled">
                         {match.missingSkills.map((skill, i) => (
-                          <li key={i} className="mb-2">❌ {skill}</li>
+                          <li key={i} className="mb-1 small">❌ {skill}</li>
                         ))}
                       </ul>
                     </div>
@@ -107,8 +107,8 @@ export default function Results() {
                 </div>
               )}
               
-              <div className="d-grid gap-2 mt-4">
-                <button onClick={() => router.push("/match")} className="btn btn-outline-primary">
+              <div className="d-grid mt-3">
+                <button onClick={() => router.push("/match")} className="btn btn-outline-primary btn-sm">
                   New Analysis
                 </button>
               </div>
