@@ -55,6 +55,11 @@ const resumeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  // GridFS file ID for stored resume
+  gridFsId: {
+    type: String,
+    required: false
+  },
   analysisMetadata: {
     processingTime: Number,
     fileType: String,

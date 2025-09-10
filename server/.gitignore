@@ -18,5 +18,6 @@ pnpm-debug.log*
 # OS cruft
 .DS_Store
 
-# resume uploads
-/uploads
+# resume uploads - keep directory but ignore contents
+/uploads/*
+!/uploads/.gitkeep

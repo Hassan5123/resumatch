@@ -4,6 +4,7 @@ const path = require('path');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 const { existsSync } = require('fs');
+const gridFsService = require('../services/gridFsService');
 
 const resumeController = {
   // Extract text from uploaded file (called before validation middleware)
@@ -68,6 +69,21 @@ const resumeController = {
       const file = req.file;
       const { extractedText, pageCount, processingTime } = req;
 
+      // Upload file to GridFS
+      let gridFsFile = null;
+      try {
+        gridFsFile = await gridFsService.uploadFileFromPath(file.path, file.filename, {
+          userId: userId.toString(),
+          originalName: file.originalname,
+          fileSize: file.size,
+          mimeType: file.mimetype
+        });
+        console.log('File uploaded to GridFS:', gridFsFile);
+      } catch (gridFsError) {
+        console.error('Error uploading to GridFS:', gridFsError);
+        return next(gridFsError);
+      }
+
       // Create resume record in database
       const resumeData = {
         userId,
@@ -76,8 +92,9 @@ const resumeController = {
         fileSize: file.size,
         extractedText,
         mimeType: file.mimetype,
-storedPath: file.path,
-analysisMetadata: {
+        storedPath: file.path,
+        gridFsId: gridFsFile.id.toString(), // Store GridFS file ID
+        analysisMetadata: {
           processingTime,
           fileType: file.mimetype,
           pageCount
@@ -87,6 +104,11 @@ analysisMetadata: {
       const newResume = new Resume(resumeData);
       await newResume.save();
 
+      // Delete the local file now that it's stored in GridFS
+      await fs.unlink(file.path).catch(err => {
+        console.error('Warning: Could not delete local file:', err);
+        // Non-critical error, continue
+      });
       
       res.status(201).json({
         message: 'Resume uploaded and processed successfully',
@@ -177,13 +199,46 @@ analysisMetadata: {
         _id: id, 
         userId, 
         isActive: true 
-      }).select('originalName storedPath mimeType filename');
+      }).select('originalName storedPath mimeType filename gridFsId');
 
       if (!resume) {
         return res.status(404).json({ message: 'Resume not found' });
       }
       
-      // First try the stored absolute path (for backward compatibility)
+      // First check if there's a GridFS ID (newer files)
+      if (resume.gridFsId) {
+        try {
+          // Get the file stream from GridFS
+          const downloadStream = await gridFsService.downloadFileById(resume.gridFsId);
+          
+          // Set response headers
+          res.set('Content-Type', resume.mimeType);
+          res.set('Content-Disposition', `attachment; filename="${resume.originalName}"`);
+          
+          // Pipe the file to the response
+          downloadStream.pipe(res);
+          
+          // Handle errors during streaming
+          downloadStream.on('error', (error) => {
+            console.error('Error streaming file from GridFS:', error);
+            // If headers haven't been sent yet, send an error response
+            if (!res.headersSent) {
+              res.status(500).json({ 
+                message: 'Error downloading file', 
+                error: error.message 
+              });
+            }
+          });
+          
+          return; // End function here since streaming has begun
+        } catch (gridFsError) {
+          console.error('GridFS download error:', gridFsError);
+          // Fall back to local file if GridFS fails
+        }
+      }
+      
+      // Fall back to local file system (for backward compatibility)
+      // First try the stored absolute path
       let filePath = resume.storedPath;
       let fileExists = existsSync(filePath);
       
