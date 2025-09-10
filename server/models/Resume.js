@@ -60,6 +60,11 @@ const resumeSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  // Base64 encoded file data for reliable download
+  fileData: {
+    type: String, // Base64 encoded file data
+    required: false
+  },
   analysisMetadata: {
     processingTime: Number,
     fileType: String,

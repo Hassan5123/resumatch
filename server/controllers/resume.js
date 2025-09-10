@@ -69,7 +69,17 @@ const resumeController = {
       const file = req.file;
       const { extractedText, pageCount, processingTime } = req;
 
-      // Upload file to GridFS
+      // Read file as base64 for reliable storage
+      let fileDataBase64 = null;
+      try {
+        const fileBuffer = await fs.readFile(file.path);
+        fileDataBase64 = fileBuffer.toString('base64');
+        console.log('File converted to base64, length:', fileDataBase64.length);
+      } catch (readError) {
+        console.error('Error reading file for base64 conversion:', readError);
+      }
+      
+      // Upload file to GridFS (as backup)
       let gridFsFile = null;
       try {
         gridFsFile = await gridFsService.uploadFileFromPath(file.path, file.filename, {
@@ -81,7 +91,7 @@ const resumeController = {
         console.log('File uploaded to GridFS:', gridFsFile);
       } catch (gridFsError) {
         console.error('Error uploading to GridFS:', gridFsError);
-        return next(gridFsError);
+        // Continue even if GridFS fails - base64 backup exists
       }
 
       // Create resume record in database
@@ -93,18 +103,23 @@ const resumeController = {
         extractedText,
         mimeType: file.mimetype,
         storedPath: file.path,
-        gridFsId: gridFsFile.id.toString(), // Store GridFS file ID
+        fileData: fileDataBase64, // Store file as base64
         analysisMetadata: {
           processingTime,
           fileType: file.mimetype,
           pageCount
         }
       };
+      
+      // Add GridFS ID if upload was successful
+      if (gridFsFile && gridFsFile.id) {
+        resumeData.gridFsId = gridFsFile.id.toString();
+      }
 
       const newResume = new Resume(resumeData);
       await newResume.save();
 
-      // Delete the local file now that it's stored in GridFS
+      // Delete the local file now that it's stored in both GridFS and base64
       await fs.unlink(file.path).catch(err => {
         console.error('Warning: Could not delete local file:', err);
         // Non-critical error, continue
@@ -199,15 +214,38 @@ const resumeController = {
         _id: id, 
         userId, 
         isActive: true 
-      }).select('originalName storedPath mimeType filename gridFsId');
+      }).select('originalName storedPath mimeType filename gridFsId fileData');
 
       if (!resume) {
         return res.status(404).json({ message: 'Resume not found' });
       }
       
-      // First check if there's a GridFS ID (newer files)
+      // STRATEGY 1: Use base64 data if availablee
+      if (resume.fileData) {
+        try {
+          console.log('Using base64 data for resume download');
+          
+          // Convert base64 back to binary
+          const fileBuffer = Buffer.from(resume.fileData, 'base64');
+          
+          // Set response headers
+          res.set('Content-Type', resume.mimeType);
+          res.set('Content-Disposition', `attachment; filename="${resume.originalName}"`);
+          res.set('Content-Length', fileBuffer.length);
+          
+          // Send the file data directly
+          res.send(fileBuffer);
+          return;
+        } catch (base64Error) {
+          console.error('Error sending base64 file data:', base64Error);
+          // Continue to other strategies if this fails
+        }
+      }
+      
+      // STRATEGY 2: Try GridFS if available
       if (resume.gridFsId) {
         try {
+          console.log('Attempting GridFS download');
           // Get the file stream from GridFS
           const downloadStream = await gridFsService.downloadFileById(resume.gridFsId);
           
@@ -237,7 +275,8 @@ const resumeController = {
         }
       }
       
-      // Fall back to local file system (for backward compatibility)
+      // STRATEGY 3: Try local file system
+      console.log('Falling back to local file system');
       // First try the stored absolute path
       let filePath = resume.storedPath;
       let fileExists = existsSync(filePath);
