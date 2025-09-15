@@ -1,0 +1,55 @@
+# Dependency directories
+node_modules/
+/.pnp
+.pnp.js
+
+# Build outputs
+/client/.next/
+/client/out/
+/client/build/
+/server/dist/
+/server/build/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local env files
+.env*.local
+# Note: Keeping .env files unignored for Railway deployment
+# If you need to ignore them later, uncomment these lines:
+# .env
+# .env.*
+
+# macOS specific
+.DS_Store
+**/.DS_Store
+
+# Testing
+/coverage
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+*.log
+*.tmp
+.temp
+.cache
+
+# Uploads directory content but keep the directory
+/server/uploads/*
+!/server/uploads/.gitkeep
+
+# Next.js telemetry
+.vercel
+
+.env
