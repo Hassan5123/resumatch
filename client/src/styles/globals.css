@@ -20,3 +20,15 @@ body {
   transform: translateY(-2px);
   transition: all 0.2s ease;
 }
+
+/* Responsive text wrapping */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Prevent horizontal scrolling on mobile */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}

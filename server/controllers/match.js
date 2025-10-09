@@ -84,7 +84,7 @@ const matchController = {
             suggestions: aiResult.analysis.improvements,
             processingTime: processingTime,
             cost: Math.round(aiResult.usage.estimatedCost * 100000) / 100, // Convert to cents
-            model: 'claude-3-5-haiku-20241022'
+            model: 'claude-4-5-sonnet-20250514'
           }],
           finalScore: aiResult.analysis.matchScore,
           confidence: 95, // High confidence for single AI provider
@@ -158,7 +158,7 @@ const matchController = {
         metadata: {
           processingTime: `${match.performance?.totalProcessingTime || 0}ms`,
           estimatedCost: `$${((match.aiAnalysis?.responses[0]?.cost || 0) / 100).toFixed(6)}`,
-          model: match.aiAnalysis?.responses[0]?.model || 'claude-3-5-haiku-20241022'
+          model: match.aiAnalysis?.responses[0]?.model || 'claude-4-5-sonnet-20250514'
         }
       }));
 

@@ -25,11 +25,11 @@ export default function Login() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-3 mt-md-5 px-3">
       <div className="row justify-content-center">
         <div className="col-md-5 col-lg-4">
           <div className="card shadow-sm border">
-            <div className="card-body p-4">
+            <div className="card-body p-3 p-md-4">
               <h1 className="text-center mb-4 h4 fw-semibold">Log In</h1>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">

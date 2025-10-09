@@ -10,8 +10,8 @@ const aiService = {
   testConnection: async () => {
     try {
       const response = await anthropic.messages.create({
-        model: 'claude-3-5-haiku-20241022',
-        max_tokens: 100,
+        model: 'claude-4-5-sonnet-20250514',
+        max_tokens: 50,
         messages: [
           {
             role: 'user',
@@ -77,8 +77,8 @@ Requirements:
 - Return ONLY the JSON object, no other text`;
 
       const response = await anthropic.messages.create({
-        model: 'claude-3-5-haiku-20241022',
-        max_tokens: 1000,
+        model: 'claude-4-5-sonnet-20250514',
+        max_tokens: 600,
         messages: [
           {
             role: 'user',
@@ -109,7 +109,7 @@ Requirements:
         usage: {
           inputTokens: response.usage.input_tokens,
           outputTokens: response.usage.output_tokens,
-          estimatedCost: ((response.usage.input_tokens * 0.8) + (response.usage.output_tokens * 4)) / 1000000
+          estimatedCost: ((response.usage.input_tokens * 3) + (response.usage.output_tokens * 15)) / 1000000
         }
       };
 

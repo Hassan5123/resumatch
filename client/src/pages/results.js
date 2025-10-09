@@ -42,11 +42,11 @@ export default function Results() {
 
   const { match, metadata } = data;
   return (
-    <div className="container-fluid my-4" style={{ maxWidth: "950px" }}>
+    <div className="container-fluid my-3 my-md-4 px-3" style={{ maxWidth: "950px" }}>
       <div className="row justify-content-center">
         <div className="col-12">
           <div className="card shadow-sm border">
-            <div className="card-body p-2">
+            <div className="card-body p-3 p-md-4">
               <h1 className="text-center mb-2 h5 fw-semibold">Match Analysis Results</h1>
               
               {/* Score Section */}
@@ -64,8 +64,8 @@ export default function Results() {
               )}
 
               {/* Strengths and Improvements */}
-              <div className="row g-3 mb-3">
-                <div className="col-md-6">
+              <div className="row g-2 g-md-3 mb-3">
+                <div className="col-12 col-md-6">
                   <div className="card h-100 border-0 bg-light">
                     <div className="card-body py-2 px-3">
                       <h5 className="card-title fw-semibold mb-2 fs-6">Strengths</h5>
@@ -77,7 +77,7 @@ export default function Results() {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-12 col-md-6">
                   <div className="card h-100 border-0 bg-light">
                     <div className="card-body py-2 px-3">
                       <h5 className="card-title fw-semibold mb-2 fs-6">Areas to Improve</h5>

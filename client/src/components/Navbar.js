@@ -29,12 +29,12 @@ export default function Navbar() {
   }, []);
   
   return (
-    <nav className="d-flex justify-content-between align-items-center py-3 px-4 bg-white" style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)' }}>
+    <nav className="d-flex flex-wrap justify-content-between align-items-center py-3 px-4 bg-white" style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)' }}>
       <Link href="/" className="d-flex align-items-center text-decoration-none">
         <span className="fs-4 me-2">📝</span>
         <span className="fw-semibold fs-5 text-dark">ResuMatch</span>
       </Link>
-      <div className="d-flex align-items-center gap-3" suppressHydrationWarning>
+      <div className="d-flex flex-wrap align-items-center gap-3" suppressHydrationWarning>
         {loggedIn ? (
           <>
             <Link href="/match" className="btn btn-primary btn-sm px-3 py-1">Analyze Now</Link>

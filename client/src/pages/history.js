@@ -72,9 +72,9 @@ export default function History() {
 
   if (!id) {
     return (
-      <div className="container-fluid mt-5" style={{ maxWidth: "900px" }}>
+      <div className="container-fluid mt-3 mt-md-5 px-3" style={{ maxWidth: "900px" }}>
         <div className="card shadow-sm border">
-          <div className="card-body p-3">
+          <div className="card-body p-3 p-md-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h1 className="h4 fw-semibold mb-0">Your Match History</h1>
               {averageScore !== null && (
@@ -99,9 +99,9 @@ export default function History() {
               <div className="alert alert-info" role="alert">No matches found.</div>
             )}
 
-            <div className="row g-3">
+            <div className="row g-2 g-md-3">
               {matches.map((m) => (
-                <div className="col-md-6" key={m.id}>
+                <div className="col-12 col-md-6" key={m.id}>
                   <div 
                     className="card h-100 shadow-sm hover-card" 
                     onClick={() => router.push({ pathname: "/history", query: { id: m.id } })}
@@ -126,9 +126,9 @@ export default function History() {
   }
 
   return (
-    <div className="container-fluid mt-4" style={{ maxWidth: "950px" }}>
+    <div className="container-fluid mt-3 mt-md-4 px-3" style={{ maxWidth: "950px" }}>
       <div className="card shadow-sm border">
-        <div className="card-body p-2">
+        <div className="card-body p-3 p-md-4">
           <button 
             onClick={() => router.push("/history")} 
             className="btn btn-light btn-sm mb-4"
@@ -165,8 +165,8 @@ export default function History() {
                 )}
 
                 {/* Strengths and Improvements */}
-                <div className="row g-3 mb-3">
-                  <div className="col-md-6">
+                <div className="row g-2 g-md-3 mb-3">
+                  <div className="col-12 col-md-6">
                     <div className="card h-100 border-0 bg-light">
                       <div className="card-body py-2 px-3">
                         <h5 className="card-title fw-semibold mb-2 fs-6">Strengths</h5>
@@ -178,7 +178,7 @@ export default function History() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-12 col-md-6">
                     <div className="card h-100 border-0 bg-light">
                       <div className="card-body py-2 px-3">
                         <h5 className="card-title fw-semibold mb-2 fs-6">Areas to Improve</h5>

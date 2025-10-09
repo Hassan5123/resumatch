@@ -87,14 +87,14 @@ export default function Match() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-3 mt-md-5 px-3">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
           <div className="card shadow-sm border">
-            <div className="card-body p-4">
+            <div className="card-body p-3 p-md-4">
               <h1 className="text-center mb-4 h4 fw-semibold">Upload Resume</h1>
 
-              <label className="border border-2 border-dashed rounded p-5 text-center d-block mb-3 text-secondary" 
+              <label className="border border-2 border-dashed rounded p-3 p-md-5 text-center d-block mb-3 text-secondary" 
                 style={{cursor: 'pointer'}}
                 onMouseOver={(e) => e.currentTarget.classList.add('bg-light')}
                 onMouseOut={(e) => e.currentTarget.classList.remove('bg-light')}>
