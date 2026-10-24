@@ -5,13 +5,28 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+const MODEL = 'claude-haiku-5-5';
+
+// Haiku 5.5 returns thinking blocks before the answer, so find the text block instead of using content[0]
+const getResponseText = (response) => {
+  if (response.stop_reason === 'refusal') {
+    throw new Error('AI declined to analyze this request');
+  }
+  const textBlock = response.content.find(block => block.type === 'text');
+  if (!textBlock) {
+    throw new Error(`AI returned no text (stop_reason: ${response.stop_reason})`);
+  }
+  return textBlock.text;
+};
+
 const aiService = {
   // Test connection to make sure API key works
   testConnection: async () => {
     try {
       const response = await anthropic.messages.create({
-        model: 'claude-4-sonnet-20250514',
-        max_tokens: 200,
+        model: MODEL,
+        max_tokens: 2000,
+        output_config: { effort: 'low' },
         messages: [
           {
             role: 'user',
@@ -22,7 +37,7 @@ const aiService = {
 
       return {
         success: true,
-        message: response.content[0].text,
+        message: getResponseText(response),
         usage: {
           inputTokens: response.usage.input_tokens,
           outputTokens: response.usage.output_tokens
@@ -77,8 +92,9 @@ Requirements:
 - Return ONLY the JSON object, no other text`;
 
       const response = await anthropic.messages.create({
-        model: 'claude-4-sonnet-20250514',
-        max_tokens: 600,
+        model: MODEL,
+        max_tokens: 4000,
+        output_config: { effort: 'low' },
         messages: [
           {
             role: 'user',
@@ -87,7 +103,7 @@ Requirements:
         ]
       });
 
-      const aiResponseText = response.content[0].text.trim();
+      const aiResponseText = getResponseText(response).trim();
       
       // ✅ Handle markdown code blocks
       let jsonText = aiResponseText;
@@ -114,17 +130,18 @@ Requirements:
       }
 
       // Validate the response has required fields
-      if (!analysisResult.matchScore || !analysisResult.summary || !analysisResult.strengths) {
+      if (typeof analysisResult.matchScore !== 'number' || !analysisResult.summary || !analysisResult.strengths) {
         throw new Error('AI response missing required fields');
       }
 
       return {
         success: true,
         analysis: analysisResult,
+        model: MODEL,
         usage: {
           inputTokens: response.usage.input_tokens,
           outputTokens: response.usage.output_tokens,
-          estimatedCost: ((response.usage.input_tokens * 3) + (response.usage.output_tokens * 15)) / 1000000
+          estimatedCost: ((response.usage.input_tokens * 0.10) + (response.usage.output_tokens * 0.50)) / 1000000
         }
       };
 
